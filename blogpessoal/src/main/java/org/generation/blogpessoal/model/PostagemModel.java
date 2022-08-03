@@ -1,38 +1,57 @@
 package org.generation.blogpessoal.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "postagens")
-public class Postagem {
+public class PostagemModel {
 
 	@Id 
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	@NotNull
-	@Size(min=5, max=100)
+	@Size(min=2, max=100)
 	private String titulo;
 	@NotNull
 	@Size(min=2, max=500)
 	private String texto;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date date = new java.sql.Date(System.currentTimeMillis());
+	//@Temporal(TemporalType.TIMESTAMP)
+	//private Date date = new java.sql.Date(System.currentTimeMillis());
+	// mudou para evitar bug
+	
+	@UpdateTimestamp
+	private LocalDateTime date;
+	
+	@ManyToOne
+	@JsonIgnoreProperties("postagens")
+	private TemaModel tema;
 
-	public long getId() {
+	public TemaModel getTema() {
+		return tema;
+	}
+
+	public void setTema(TemaModel tema) {
+		this.tema = tema;
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -52,11 +71,11 @@ public class Postagem {
 		this.texto = texto;
 	}
 
-	public Date getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 
