@@ -23,7 +23,7 @@ public class TemaModel {
 	@NotBlank (message = "A descrição é obrigatoria, não pode deixar espaço em branco.")
 	private String descricao;
 	
-	@OneToMany(mappedBy="tema",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="tema",cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("tema")
 	private List <PostagemModel> postagens;
 
